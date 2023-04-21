@@ -1,21 +1,41 @@
 const fs = require("fs");
 const path = require("path");
 const homedir = require("os").homedir();
+const inquirer = require("inquirer");
 
 const directory = "/Extension-Test";
 
-console.log("home directory", homedir);
-console.log(
-  "extension test in homedirectory",
-  path.join(homedir, "/Users/andrewkleindienst/desktop", directory)
-);
+const directoryPrompt = {
+  type: "input",
+  name: "directoryPath",
+  message: "Select a directory:",
+  validate: function (input) {
+    // Validate that the input is a valid directory path
+    // You can customize the validation logic here
+    return !!input.trim() || "Please enter a valid directory path";
+  },
+};
 
-// Just using the extname() will find the last extension.
-// Probably needs to be some conditional logic to tell it to skip if there is no .ptl at the end. Otherwise it will remove .mp3
+// Show the directory prompt
+inquirer
+  .prompt(directoryPrompt)
+  .then((answers) => {
+    // answers.directoryPath contains the selected directory path
+    const selectedDirectoryPath = answers.directoryPath;
+    console.log("Selected directory:", selectedDirectoryPath);
+    // Use the selected directory path for further operations
+    // ...
+    readFilesInDirectory(selectedDirectoryPath);
+  })
+  .catch((err) => {
+    console.error(err);
+  });
 
-// This code will read all files in the hardcoded directory and remove the extension
-
-// This app needs an interface to be able to select the directory you want.
+// console.log("home directory", homedir);
+// console.log(
+//   "extension test in homedirectory",
+//   path.join(homedir, "/Users/andrewkleindienst/desktop", directory)
+// );
 
 function readFilesInDirectory(directoryPath) {
   //   reads the files in the directory specified
@@ -65,4 +85,4 @@ const renameFile = (fileName, newFileName) => {
   });
 };
 
-readFilesInDirectory(directory);
+// readFilesInDirectory(directory);
