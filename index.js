@@ -29,7 +29,7 @@ inquirer
   ])
   .then((answers) => {
     // answers.directoryPath contains the selected directory path
-    const directoryPath = answers.directoryPath;
+    const directoryPath = "/" + answers.directoryPath;
     const location = answers.location;
     console.log("Selected directory:", directoryPath);
     mainFilePath = path.join(homedir, location, directoryPath);
