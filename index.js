@@ -5,6 +5,8 @@ const inquirer = require("inquirer");
 
 let mainFilePath = "";
 
+// TODO Need to be able to set the path to be the hard drive path
+
 // Show the directory prompt
 inquirer
   .prompt([
@@ -51,7 +53,7 @@ function findFilesWithExtension(startPath, extension) {
   const matchingFiles = [];
 
   // Recursive function to search for files with the desired extension
-  async function findFilesRecursively(dir) {
+  function findFilesRecursively(dir) {
     console.log("in findFilesRecursively function");
     const files = fs.readdirSync(dir);
     files.forEach((file) => {
