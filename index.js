@@ -5,37 +5,34 @@ const inquirer = require("inquirer");
 
 let mainFilePath = "";
 
-// TODO Need to be able to set the path to be the hard drive path
-
 // Show the directory prompt
 inquirer
   .prompt([
     {
+      // Input the full path of the directory to be edited
       type: "input",
       name: "directoryPath",
-      message: "Select a directory:",
+      message: "Select a directory to be edited:",
       validate: function (input) {
         // Validate that the input is a valid directory path
-        // You can customize the validation logic here
         return !!input.trim() || "Please enter a valid directory path";
       },
     },
     {
-      type: "list",
-      name: "location",
-      message: "select the location of the directory",
-      choices: ["/desktop", "/documents"],
+      type: "input",
+      name: "extension",
+      message:
+        "What extension would you like to remove? (.ptl, .mp3, etc) WARNING: All files in directory will have this extension removed!",
     },
   ])
   .then((answers) => {
     // answers.directoryPath contains the selected directory path
     const directoryPath = "/" + answers.directoryPath;
-    const location = answers.location;
+    const extension = answers.extension;
     console.log("Selected directory:", directoryPath);
-    mainFilePath = path.join(homedir, location, directoryPath);
+    console.log("Selected Extension", extension);
     console.log("filePath", mainFilePath);
-    // readFilesInDirectory(location, selectedDirectoryPath);
-    findFilesWithExtension(mainFilePath, ".ptl");
+    findFilesWithExtension(directoryPath, extension);
   })
   .catch((err) => {
     console.error(err);
@@ -80,7 +77,7 @@ function findFilesWithExtension(startPath, extension) {
 const removeExtension = async (matchingFiles) => {
   console.log("in removeExtension function");
   matchingFiles.forEach((file) => {
-    //   Identifies wha the extension name is for the file
+    //   Identifies what the extension name is for the file
     const fileExtension = path.extname(file);
     //   removes the file extension
     const newFileName = file.replace(fileExtension, "");
@@ -110,7 +107,3 @@ const renameFile = (fileName, newFileName) => {
     }
   });
 };
-
-// findFilesWithExtension(mainFilePath, ".ptl");
-
-// readFilesInDirectory(directory);
